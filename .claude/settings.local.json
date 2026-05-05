@@ -3,7 +3,11 @@
     "allow": [
       "Bash(python3 *)",
       "Bash(open *)",
-      "Bash(sort -t'\"' -k2)"
+      "Bash(sort -t'\"' -k2)",
+      "Read(//Users/mac/Desktop/**)",
+      "Bash(identify \"/Users/mac/Desktop/gazda-favicon 2.png\")",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/mac/Desktop/gazda-favicon 2.png\")",
+      "Bash(pip3 install *)"
     ]
   }
 }
