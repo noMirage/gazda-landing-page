@@ -260,9 +260,10 @@
       background: radial-gradient(circle, rgba(192, 39, 45, 0.12) 0%, transparent 70%);
       z-index: 0;
     }
-    .hero-content { position: relative; z-index: 1; max-width: 900px; }
+    .hero-content { position: relative; z-index: 1; max-width: 900px; width: 100%; }
 
-    .hero-logo { display: inline-flex; align-items: center; }
+    .hero-logo { display: inline-flex; align-items: center; max-width: 100%; }
+    .hero-logo svg { width: 100%; height: auto; max-width: 420px; }
 
     .hero-h1 {
       font-family: var(--font-head);
@@ -1361,6 +1362,10 @@
     @media (max-width: 480px) {
       .how-mode-bar { padding: 4px; }
       .how-mode-btn { font-size: 12px; padding: 10px 12px; }
+      .calc-scenario-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .calc-scenario-tabs::-webkit-scrollbar { display: none; }
+      .calc-scenario-tab { padding: 8px 14px; font-size: 11px; letter-spacing: 0.3px; white-space: nowrap; flex-shrink: 0; }
+      .calc-scenario-likely { font-size: 8px; }
     }
     @media (max-width: 600px) {
       .section { padding: 72px 0; }
@@ -1386,9 +1391,16 @@
       .inv-calc-metrics { grid-template-columns: 1fr 1fr; }
       .inv-calc-roi { grid-template-columns: 1fr; }
     }
+    @media (max-width: 480px) {
+      #hero { padding: 100px 20px 120px; }
+      .hero-logo { margin-bottom: 24px !important; }
+      .hero-logo svg { max-width: min(320px, 85vw); }
+      .hero-h1 { font-size: clamp(28px, 8vw, 40px); }
+    }
     @media (max-width: 375px) {
       .container { padding: 0 16px; }
-      .hero-h1 { font-size: clamp(28px, 8vw, 40px); }
+      .hero-logo svg { max-width: min(260px, 80vw); }
+      .hero-h1 { font-size: clamp(24px, 7.5vw, 34px); }
       .section-title { font-size: clamp(26px, 7vw, 40px); }
     }
   </style>
