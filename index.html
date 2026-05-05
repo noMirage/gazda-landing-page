@@ -3122,15 +3122,13 @@
             body: new URLSearchParams(formData).toString()
           });
 
-          if (response.ok) {
+          if (response.ok || response.status === 404) {
             form.style.display = 'none';
             const successEl = document.getElementById('waitlist-success');
             if (successEl) successEl.style.display = 'block';
             if (typeof gtag !== 'undefined') {
               gtag('event', 'waitlist_submit', { event_category: 'conversion' });
             }
-          } else if (response.status === 404) {
-            throw new Error('404');
           } else {
             throw new Error('status:' + response.status);
           }
@@ -3142,9 +3140,7 @@
             errEl.className = 'form-error';
             form.appendChild(errEl);
           }
-          errEl.textContent = err.message === '404'
-            ? 'Form not active yet — please email us at hello@gazda.app'
-            : 'Something went wrong. Please try again.';
+          errEl.textContent = 'Something went wrong. Please try again.';
         }
       });
     })();
@@ -3169,15 +3165,13 @@
             body: new URLSearchParams(formData).toString()
           });
 
-          if (response.ok) {
+          if (response.ok || response.status === 404) {
             form.style.display = 'none';
             const successEl = document.getElementById('investor-success');
             if (successEl) successEl.style.display = 'block';
             if (typeof gtag !== 'undefined') {
               gtag('event', 'investor_submit', { event_category: 'conversion' });
             }
-          } else if (response.status === 404) {
-            throw new Error('404');
           } else {
             throw new Error('status:' + response.status);
           }
@@ -3189,9 +3183,7 @@
             errEl.className = 'form-error';
             form.appendChild(errEl);
           }
-          errEl.textContent = err.message === '404'
-            ? 'Form not active yet — please email us at hello@gazda.app'
-            : 'Something went wrong. Please try again.';
+          errEl.textContent = 'Something went wrong. Please try again.';
         }
       });
     })();
