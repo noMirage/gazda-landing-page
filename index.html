@@ -2087,7 +2087,7 @@
         </div>
 
         <div class="waitlist-form reveal reveal-delay-2" id="waitlist-form-wrap">
-          <form id="waitlist-form" name="gazda-waitlist" method="POST" netlify netlify-honeypot="bot-field">
+          <form id="waitlist-form" name="gazda-waitlist" action="/" method="POST" netlify netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="gazda-waitlist">
             <p style="display:none;"><label>Do not fill: <input name="bot-field"></label></p>
             <div class="form-group">
@@ -2301,7 +2301,7 @@
 
         <div class="investor-form reveal reveal-delay-2">
           <h3 data-i18n="inv.form.title">Send Application</h3>
-          <form id="investor-form" name="gazda-investor" method="POST" netlify netlify-honeypot="bot-field">
+          <form id="investor-form" name="gazda-investor" action="/" method="POST" netlify netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="gazda-investor">
             <p style="display:none;"><label>Do not fill: <input name="bot-field"></label></p>
             <div class="form-group">
@@ -3112,11 +3112,14 @@
         e.preventDefault();
         if (btn) { btn.disabled = true; btn.textContent = '...'; }
 
+        const formData = new FormData(form);
+        saveToLocal(Object.fromEntries(formData), 'waitlist');
+
         try {
           const response = await fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(new FormData(form)).toString()
+            body: new URLSearchParams(formData).toString()
           });
 
           if (response.ok) {
@@ -3126,22 +3129,22 @@
             if (typeof gtag !== 'undefined') {
               gtag('event', 'waitlist_submit', { event_category: 'conversion' });
             }
+          } else if (response.status === 404) {
+            throw new Error('404');
           } else {
-            throw new Error('Server error: ' + response.status);
+            throw new Error('status:' + response.status);
           }
         } catch (err) {
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = btn.dataset.originalText || 'Submit';
-          }
+          if (btn) { btn.disabled = false; btn.textContent = btn.dataset.originalText || 'Submit'; }
           let errEl = form.querySelector('.form-error');
           if (!errEl) {
             errEl = document.createElement('p');
             errEl.className = 'form-error';
-            errEl.style.cssText = 'color:#C0272D;font-size:13px;margin-top:10px;';
             form.appendChild(errEl);
           }
-          errEl.textContent = 'Something went wrong. Please try again.';
+          errEl.textContent = err.message === '404'
+            ? 'Form not active yet — please email us at hello@gazda.app'
+            : 'Something went wrong. Please try again.';
         }
       });
     })();
@@ -3156,11 +3159,14 @@
         e.preventDefault();
         if (btn) { btn.disabled = true; btn.textContent = '...'; }
 
+        const formData = new FormData(form);
+        saveToLocal(Object.fromEntries(formData), 'investor');
+
         try {
           const response = await fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(new FormData(form)).toString()
+            body: new URLSearchParams(formData).toString()
           });
 
           if (response.ok) {
@@ -3170,22 +3176,22 @@
             if (typeof gtag !== 'undefined') {
               gtag('event', 'investor_submit', { event_category: 'conversion' });
             }
+          } else if (response.status === 404) {
+            throw new Error('404');
           } else {
-            throw new Error('Server error: ' + response.status);
+            throw new Error('status:' + response.status);
           }
         } catch (err) {
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = btn.dataset.originalText || 'Submit';
-          }
+          if (btn) { btn.disabled = false; btn.textContent = btn.dataset.originalText || 'Submit'; }
           let errEl = form.querySelector('.form-error');
           if (!errEl) {
             errEl = document.createElement('p');
             errEl.className = 'form-error';
-            errEl.style.cssText = 'color:#C0272D;font-size:13px;margin-top:10px;';
             form.appendChild(errEl);
           }
-          errEl.textContent = 'Something went wrong. Please try again.';
+          errEl.textContent = err.message === '404'
+            ? 'Form not active yet — please email us at hello@gazda.app'
+            : 'Something went wrong. Please try again.';
         }
       });
     })();
